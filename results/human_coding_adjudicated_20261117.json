@@ -1,0 +1,22 @@
+{
+  "rule": "where readers A and B agree, their label is kept; on 23 disagreements the third reader tourism_relevant breaks the tie",
+  "n": 400,
+  "tp": 195,
+  "fp": 5,
+  "fn": 12,
+  "tn": 188,
+  "precision": 0.975,
+  "recall": 0.9420289855072463,
+  "precision_ci95": [
+    0.9519230769230769,
+    0.995
+  ],
+  "third_marked_tourism_relevant": 20,
+  "third_of_23": 23,
+  "coder_correction_20261117": {
+    "海南_2016_0343": {"policy_action": "1 to 0", "tourism_relevant": 0},
+    "陕西_2008_0224": {"policy_action": "1 to 0", "tourism_relevant": 0},
+    "source": "The third reader said the two policy-action marks were a misunderstanding and should be 0."
+  },
+  "note": "Tourism-relevance tie-break is unchanged, so adjudicated precision remains 0.975 and recall 0.942. Policy-action shares 0.87 and 0.84 remain readers A and B on all 200 lexicon hits. The third reader coded policy action only on the 23 disagreements."
+}

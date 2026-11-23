@@ -1,0 +1,806 @@
+{
+  "counts": {
+    "corpus_total_documents_31units": 815,
+    "corpus_27units_all_years": 714,
+    "corpus_municipal_all_years": 101,
+    "index_construction_units_2003_2024": 671,
+    "reports_in_estimation_window_2003_2019": 516,
+    "calendar_cells_31x17": 527,
+    "calendar_cells_without_report": 11,
+    "level_estimation_sample": 503,
+    "municipal_coverage_note": "Beijing 1998-2026 (29 docs); Tianjin/Shanghai/Chongqing 2003-2026 (24 docs each); all four fully cover 2003-2024."
+  },
+  "multi_outcome": {
+    "rows": [
+      {
+        "outcome": "receipts_growth",
+        "cells": [
+          {
+            "spec": "GAT_k0",
+            "coef": 0.0020289871555725873,
+            "se": 0.0281664931688903,
+            "p": 0.9425736637435134,
+            "nobs": 471,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k1",
+            "coef": 0.03725075090617348,
+            "se": 0.025048268134987832,
+            "p": 0.13697289020885206,
+            "nobs": 471,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k2",
+            "coef": 0.023906152148721875,
+            "se": 0.032645289385850984,
+            "p": 0.4639853535056814,
+            "nobs": 441,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          }
+        ]
+      },
+      {
+        "outcome": "arrivals_growth",
+        "cells": [
+          {
+            "spec": "GAT_k0",
+            "coef": -0.024204741800814108,
+            "se": 0.02553515600715514,
+            "p": 0.34318101452016236,
+            "nobs": 482,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k1",
+            "coef": 0.03304641614232071,
+            "se": 0.02141519297312459,
+            "p": 0.12279935708833033,
+            "nobs": 482,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k2",
+            "coef": 0.022151745938100202,
+            "se": 0.02504884094857793,
+            "p": 0.3765115396296045,
+            "nobs": 451,
+            "n_clusters": 31,
+            "p_holm9": 1.0
+          }
+        ]
+      },
+      {
+        "outcome": "accgdp_growth",
+        "cells": [
+          {
+            "spec": "GAT_k0",
+            "coef": -0.0033750379564796967,
+            "se": 0.0071934260214227925,
+            "p": 0.6389383632703727,
+            "nobs": 351,
+            "n_clusters": 30,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k1",
+            "coef": -0.003656655550950917,
+            "se": 0.011623539520580109,
+            "p": 0.7530725642672672,
+            "nobs": 351,
+            "n_clusters": 30,
+            "p_holm9": 1.0
+          },
+          {
+            "spec": "GAT_k2",
+            "coef": -0.0057798268521746755,
+            "se": 0.010669106229692011,
+            "p": 0.5880011660306745,
+            "nobs": 350,
+            "n_clusters": 30,
+            "p_holm9": 1.0
+          }
+        ]
+      }
+    ],
+    "joint_wald": {
+      "receipts_growth": {
+        "joint_stat": 1.7850743831979843,
+        "joint_p": 0.6181882911556862,
+        "nobs": 426,
+        "n_clusters": 31,
+        "coefs": {
+          "GAT_L0": -0.011855967714191416,
+          "GAT_L1": 0.04336372093129893,
+          "GAT_L2": -0.006972805834459097
+        }
+      },
+      "arrivals_growth": {
+        "joint_stat": 4.202721735230906,
+        "joint_p": 0.2403895291584503,
+        "nobs": 434,
+        "n_clusters": 31,
+        "coefs": {
+          "GAT_L0": -0.04125157340887888,
+          "GAT_L1": 0.05352063100718235,
+          "GAT_L2": -0.010220982878627669
+        }
+      },
+      "accgdp_growth": {
+        "joint_stat": 0.6698028839407997,
+        "joint_p": 0.8802825658087771,
+        "nobs": 336,
+        "n_clusters": 30,
+        "coefs": {
+          "GAT_L0": -0.002177950969496108,
+          "GAT_L1": -0.0014400803768080638,
+          "GAT_L2": -0.004830719976901536
+        }
+      }
+    }
+  },
+  "mde_timing": {
+    "lag0": {
+      "se": 0.0281664931688903,
+      "n_clusters": 31,
+      "mde": 0.08157128292747512
+    },
+    "lag1": {
+      "se": 0.025048268134987835,
+      "n_clusters": 31,
+      "mde": 0.07254077938034097
+    },
+    "lag2": {
+      "se": 0.032645289385850984,
+      "n_clusters": 31,
+      "mde": 0.09454205465960264
+    }
+  },
+  "classification": {
+    "baseline_median_threshold_ln": 6.5294331147851885,
+    "baseline_n_lower": 15,
+    "baseline_lower_obs": 255,
+    "t33_threshold_ln": 6.019014066783698,
+    "t33_n_lower": 10,
+    "early_threshold_ln": 5.685312017753414,
+    "early_n_lower_of": 30,
+    "early_n_lower": 15,
+    "arrivals_tercile_n": 11,
+    "arrivals_tercile_threshold": 51.15518,
+    "five_a_median": 3.0,
+    "five_a_n_below": 7,
+    "five_a_municipal_stock": {
+      "北京": 5,
+      "天津": 2,
+      "上海": 3,
+      "重庆": 3
+    },
+    "five_a_agreement_official_vs_third_party": {
+      "agree_of": 27,
+      "agree": 24,
+      "note": "third-party stock exists for the 27 provincial units only"
+    }
+  },
+  "table4_between_validation": {
+    "GAT_vs_ln_arr": {
+      "n": 31,
+      "r": -0.37359635803080415,
+      "p": 0.03842869581652779
+    },
+    "GAT_vs_ln_acc": {
+      "n": 31,
+      "r": -0.4846741251430836,
+      "p": 0.00572359013668694
+    },
+    "two_layer_vs_ln_arr": {
+      "n": 31,
+      "r": -0.2945613178835311,
+      "p": 0.10771011340178228
+    },
+    "two_layer_vs_ln_acc": {
+      "n": 31,
+      "r": -0.3984120019563382,
+      "p": 0.026423542948122897
+    }
+  },
+  "table5_yang_convergence": {
+    "cells": {
+      "full_2002_2023_composite": {
+        "n": 31,
+        "pearson_r": 0.4734458884274184,
+        "pearson_p": 0.0071415524208250005,
+        "pearson_ci95": [
+          0.14311483596235042,
+          0.708866026636757
+        ],
+        "spearman_rho": 0.15887096774193551,
+        "spearman_p": 0.3933008105079191,
+        "partial_r_given_ln_gdp": 0.5856325025479567,
+        "partial_p": 0.0005378318793545317
+      },
+      "full_2002_2023_two_layer": {
+        "n": 31,
+        "pearson_r": 0.5384621314436068,
+        "pearson_p": 0.0017786556915824654,
+        "pearson_ci95": [
+          0.22753549401910267,
+          0.7497507561131985
+        ],
+        "spearman_rho": 0.2028225806451613,
+        "spearman_p": 0.27383011332666607,
+        "partial_r_given_ln_gdp": 0.6164925146484,
+        "partial_p": 0.00022159365488146353
+      },
+      "window_2003_2019_composite": {
+        "n": 31,
+        "pearson_r": 0.47707690879673226,
+        "pearson_p": 0.006653531051817973,
+        "pearson_ci95": [
+          0.14770613834292887,
+          0.7111918362183532
+        ],
+        "spearman_rho": 0.12137096774193548,
+        "spearman_p": 0.5154299073510366,
+        "partial_r_given_ln_gdp": 0.5689298556590051,
+        "partial_p": 0.0008384366490490706
+      },
+      "window_2003_2019_two_layer": {
+        "n": 31,
+        "pearson_r": 0.5500851171639632,
+        "pearson_p": 0.001346251751572497,
+        "pearson_ci95": [
+          0.2431364841930592,
+          0.7568936312790027
+        ],
+        "spearman_rho": 0.27419354838709686,
+        "spearman_p": 0.1355193468293413,
+        "partial_r_given_ln_gdp": 0.619458642444716,
+        "partial_p": 0.00020249345571552593
+      }
+    },
+    "matched_units": 31,
+    "yang_provincial_units": 31,
+    "hainan_excluded": {
+      "composite_r": 0.16572172067345026,
+      "composite_p": 0.3814650755876299,
+      "composite_ci95": [
+        -0.2069003746690032,
+        0.4963562744830411
+      ],
+      "composite_spearman": 0.07185761957730812,
+      "n": 30,
+      "two_layer_r": 0.27506775454262455,
+      "two_layer_p": 0.14125319334499117
+    },
+    "loo_pearson_range": {
+      "min": 0.16572172067345026,
+      "max": 0.5416854604817326
+    }
+  },
+  "figure4_between_within": {
+    "n_provinces": 31,
+    "raw_between_r": -0.4217129523065348,
+    "raw_between_p": 0.018131549114578798,
+    "between_coef_hc1": 0.16776115512785042,
+    "between_p_hc1": 0.5755527590225273,
+    "between_per_sd": 0.15546067872516206,
+    "within_coef_cluster": -0.09180018638370356,
+    "within_p_cluster": 0.07410748851163412,
+    "within_per_sd": -0.0850692716763353,
+    "gat_sd": 0.926678637892579,
+    "cooks_top3": [
+      {
+        "province": "Hainan",
+        "cooks_d": 3.096755901865276
+      },
+      {
+        "province": "Xizang",
+        "cooks_d": 1.0013670693388346
+      },
+      {
+        "province": "Ningxia",
+        "cooks_d": 0.3308102070845601
+      }
+    ],
+    "figure": "figures/fig4_between_within_31.png"
+  },
+  "domestic_revenue_timing": {
+    "coverage_note": "Provincial statistical bulletins parsed successfully for 26 units; the four municipalities are not in the parsed bulletin set, so this check runs on the 26 covered units with 31-province GAT exposures.",
+    "n_cells_ok": 315,
+    "separate": [
+      {
+        "spec": "k0",
+        "coef": 0.004591145451479396,
+        "se": 0.010728899495393284,
+        "p": 0.668707005341189,
+        "n": 271,
+        "clusters": 25
+      },
+      {
+        "spec": "k1",
+        "coef": 0.004243637669339612,
+        "se": 0.01631176510304877,
+        "p": 0.7947418299977036,
+        "n": 271,
+        "clusters": 25
+      },
+      {
+        "spec": "k2",
+        "coef": 0.013054742726818296,
+        "se": 0.015367398872828925,
+        "p": 0.39559815774405704,
+        "n": 249,
+        "clusters": 24
+      }
+    ],
+    "joint": {
+      "wald_stat": 6.0233969416843225,
+      "wald_p": 0.1104774450211147,
+      "n": 249,
+      "clusters": 24
+    },
+    "mean_growth": 0.21808379794570076,
+    "mde_one_year": 0.04773127766847118
+  },
+  "extracts": {
+    "h2_baseline": {
+      "reference_coef": -0.02991727245750584,
+      "reference_p": 0.42614054956547787,
+      "interaction": {
+        "name": "gat_x_lower",
+        "coef": 0.09372181851167932,
+        "se": 0.0485605840439086,
+        "p": 0.053607115090700895,
+        "ci95": [
+          -0.0014569262143815376,
+          0.18890056323774018
+        ]
+      },
+      "total_lower_effect": {
+        "coef": 0.06380454605417349,
+        "se": 0.030332074638457347,
+        "p": 0.035419128632986914
+      },
+      "r2_within": 0.01534173253983917,
+      "nobs": 471
+    },
+    "convergence_lagged_level": {
+      "coef": -0.17201180052594758,
+      "p": 1.938376288752508e-05
+    },
+    "h1_joint": {
+      "coefs": {
+        "const": -2.168404344971009e-19,
+        "GAT_L0": -0.01185596771419141,
+        "GAT_L1": 0.043363720931298914,
+        "GAT_L2": -0.006972805834459097
+      },
+      "nobs": 426,
+      "wald_stat": 1.7850743831979843,
+      "wald_p": 0.6181882911556862,
+      "eq_01_p": 0.3835466117310151,
+      "eq_02_p": 0.8719003985026877
+    },
+    "level_model": {
+      "lag0": {
+        "coef": -0.08875350552308522,
+        "p": 0.0819743160031351,
+        "nobs": 503,
+        "r2_within": 0.20774761530711772
+      },
+      "lag1": {
+        "coef": -0.05089072275199409,
+        "p": 0.31521859676885267,
+        "nobs": 473,
+        "r2_within": 0.18677022203612859
+      },
+      "lag2": {
+        "coef": -0.015206857897213408,
+        "p": 0.8090224842946186,
+        "nobs": 443,
+        "r2_within": 0.18532339769338357
+      }
+    },
+    "region_cluster_p": {
+      "baseline": 0.06716968747657963,
+      "early_receipts": 0.5745002634067935,
+      "early_arrivals": 0.4486829179097418
+    },
+    "winsor_bounds": [
+      -1.004577192449484,
+      0.8329210904779963
+    ],
+    "wcr": {
+      "t_obs": 1.9299977617018798,
+      "webb_p": 0.0644,
+      "rademacher_p": 0.065
+    },
+    "winsor_focal": {
+      "name": "gat_x_lower",
+      "coef": 0.06722449854924054,
+      "se": 0.04355787480096612,
+      "p": 0.12274892645650197,
+      "ci95": [
+        -0.01814893606065307,
+        0.15259793315913414
+      ]
+    },
+    "winsor_wcr_p": 0.1364,
+    "dictionary_variants": {
+      "full_37_window_scaled": {
+        "coef": 0.09299557591170003,
+        "se": 0.04822680792112935,
+        "p": 0.05381828014108098,
+        "n_terms": 37
+      },
+      "remove_ambiguous_reception_hotel_homestay": {
+        "coef": 0.11431828360330391,
+        "se": 0.0470994142087355,
+        "p": 0.015217124945204963,
+        "n_terms": 34
+      },
+      "leave_out_generic": {
+        "coef": 0.039703679298180895,
+        "se": 0.03581657871345014,
+        "p": 0.2676338664646909,
+        "n_terms": 30
+      },
+      "leave_out_formats": {
+        "coef": 0.09118646996721058,
+        "se": 0.051723373924426296,
+        "p": 0.07790648403787691,
+        "n_terms": 27
+      },
+      "leave_out_instruments": {
+        "coef": 0.10159362537642218,
+        "se": 0.044607033965825715,
+        "p": 0.022754906382242607,
+        "n_terms": 31
+      },
+      "leave_out_industry_outcomes": {
+        "coef": 0.0822364945418519,
+        "se": 0.04579361538891081,
+        "p": 0.07252521891354255,
+        "n_terms": 23
+      }
+    },
+    "dictionary_two_layer_window_scaled": {
+      "name": "gat_x_lower",
+      "coef": 0.028423434465963467,
+      "se": 0.030958576134201367,
+      "p": 0.35856033090060535,
+      "ci95": [
+        -0.032255374757071215,
+        0.08910224368899815
+      ]
+    },
+    "h3": {
+      "long_run_coef": 0.07281363077976878,
+      "long_run_se": 0.17477746901551633,
+      "long_run_p": 0.6801419131314289,
+      "long_run_n": 31,
+      "early_coef": 0.08297762661570544,
+      "early_se": 0.1782267488841009,
+      "early_p": 0.6452546418865281,
+      "early_n": 30,
+      "loo_min": -0.058567286022777935,
+      "loo_max": 0.16178302190379967,
+      "loo_negative": 1
+    },
+    "oos": {
+      "composite_lag": {
+        "n_predictions": 297,
+        "rmse_no_gat": 0.2513900420227768,
+        "rmse_with_gat": 0.24973892698823216,
+        "mae_no_gat": 0.15620012908465453,
+        "mae_with_gat": 0.15490450343259163,
+        "dm_t": -1.6060600480627274,
+        "dm_p": 0.10932696609643701,
+        "per_year": [
+          {
+            "year": 2010,
+            "n": 30
+          },
+          {
+            "year": 2011,
+            "n": 30
+          },
+          {
+            "year": 2012,
+            "n": 29
+          },
+          {
+            "year": 2013,
+            "n": 30
+          },
+          {
+            "year": 2014,
+            "n": 29
+          },
+          {
+            "year": 2015,
+            "n": 29
+          },
+          {
+            "year": 2016,
+            "n": 29
+          },
+          {
+            "year": 2017,
+            "n": 30
+          },
+          {
+            "year": 2018,
+            "n": 30
+          },
+          {
+            "year": 2019,
+            "n": 31
+          }
+        ]
+      },
+      "half_scale_hybrid_lag": {
+        "n_predictions": 297,
+        "rmse_no_gat": 0.2513900420227768,
+        "rmse_with_gat": 0.24969905152769672,
+        "mae_no_gat": 0.15620012908465453,
+        "mae_with_gat": 0.1548777560450622,
+        "dm_t": -1.6167372107457632,
+        "dm_p": 0.10700022080821325,
+        "per_year": [
+          {
+            "year": 2010,
+            "n": 30
+          },
+          {
+            "year": 2011,
+            "n": 30
+          },
+          {
+            "year": 2012,
+            "n": 29
+          },
+          {
+            "year": 2013,
+            "n": 30
+          },
+          {
+            "year": 2014,
+            "n": 29
+          },
+          {
+            "year": 2015,
+            "n": 29
+          },
+          {
+            "year": 2016,
+            "n": 29
+          },
+          {
+            "year": 2017,
+            "n": 30
+          },
+          {
+            "year": 2018,
+            "n": 30
+          },
+          {
+            "year": 2019,
+            "n": 31
+          }
+        ]
+      },
+      "two_layer_lag": {
+        "n_predictions": 297,
+        "rmse_no_gat": 0.2513900420227768,
+        "rmse_with_gat": 0.2483574251458125,
+        "mae_no_gat": 0.15620012908465453,
+        "mae_with_gat": 0.15437484555170275,
+        "dm_t": -1.4220080107563564,
+        "dm_p": 0.1560767649849365,
+        "per_year": [
+          {
+            "year": 2010,
+            "n": 30
+          },
+          {
+            "year": 2011,
+            "n": 30
+          },
+          {
+            "year": 2012,
+            "n": 29
+          },
+          {
+            "year": 2013,
+            "n": 30
+          },
+          {
+            "year": 2014,
+            "n": 29
+          },
+          {
+            "year": 2015,
+            "n": 29
+          },
+          {
+            "year": 2016,
+            "n": 29
+          },
+          {
+            "year": 2017,
+            "n": 30
+          },
+          {
+            "year": 2018,
+            "n": 30
+          },
+          {
+            "year": 2019,
+            "n": 31
+          }
+        ]
+      }
+    },
+    "mirror_h2_baseline": {
+      "name": "gat_x_lower",
+      "coef": 0.09384898636486842,
+      "se": 0.04854817100168922,
+      "p": 0.05322256849322858,
+      "ci95": [
+        -0.0013054287984424484,
+        0.1890034015281793
+      ]
+    },
+    "h3_early_missing_province": []
+  },
+  "measurement_scales": {
+    "hybrid_vs_composite_r": 0.9999917909592626,
+    "tfidf_raw_sd_window": 0.0037986512109421475,
+    "tfidf_raw_mean_window": 0.0033503116105801814,
+    "composite_sd": 0.926678637892579
+  },
+  "extreme_growth_cells": {
+    "n": 22,
+    "cells": [
+      {
+        "province": "四川",
+        "year": 2008,
+        "tourism_growth": -1.2029910384339848,
+        "province_en": "Sichuan"
+      },
+      {
+        "province": "天津",
+        "year": 2018,
+        "tourism_growth": -1.2179228921128589,
+        "province_en": "Tianjin"
+      },
+      {
+        "province": "宁夏",
+        "year": 2004,
+        "tourism_growth": 0.7108467576593462,
+        "province_en": "Ningxia"
+      },
+      {
+        "province": "宁夏",
+        "year": 2013,
+        "tourism_growth": 0.7959355838315159,
+        "province_en": "Ningxia"
+      },
+      {
+        "province": "山西",
+        "year": 2004,
+        "tourism_growth": 0.8062936837680517,
+        "province_en": "Shanxi"
+      },
+      {
+        "province": "山西",
+        "year": 2014,
+        "tourism_growth": -1.0751739503562463,
+        "province_en": "Shanxi"
+      },
+      {
+        "province": "新疆",
+        "year": 2011,
+        "tourism_growth": 0.9194138834085192,
+        "province_en": "Xinjiang"
+      },
+      {
+        "province": "新疆",
+        "year": 2019,
+        "tourism_growth": -0.7345364150502416,
+        "province_en": "Xinjiang"
+      },
+      {
+        "province": "江苏",
+        "year": 2013,
+        "tourism_growth": -0.973450919837478,
+        "province_en": "Jiangsu"
+      },
+      {
+        "province": "河北",
+        "year": 2004,
+        "tourism_growth": 0.8112978922453671,
+        "province_en": "Hebei"
+      },
+      {
+        "province": "河南",
+        "year": 2004,
+        "tourism_growth": 0.92514173595419,
+        "province_en": "Henan"
+      },
+      {
+        "province": "浙江",
+        "year": 2016,
+        "tourism_growth": -0.7749628448867192,
+        "province_en": "Zhejiang"
+      },
+      {
+        "province": "湖南",
+        "year": 2004,
+        "tourism_growth": 1.922829894271087,
+        "province_en": "Hunan"
+      },
+      {
+        "province": "甘肃",
+        "year": 2004,
+        "tourism_growth": 0.7268203956665333,
+        "province_en": "Gansu"
+      },
+      {
+        "province": "甘肃",
+        "year": 2008,
+        "tourism_growth": -1.477028784407696,
+        "province_en": "Gansu"
+      },
+      {
+        "province": "甘肃",
+        "year": 2019,
+        "tourism_growth": 0.7355227379941791,
+        "province_en": "Gansu"
+      },
+      {
+        "province": "福建",
+        "year": 2018,
+        "tourism_growth": -0.9869280029727934,
+        "province_en": "Fujian"
+      },
+      {
+        "province": "西藏",
+        "year": 2007,
+        "tourism_growth": 0.797530849057706,
+        "province_en": "Xizang"
+      },
+      {
+        "province": "西藏",
+        "year": 2008,
+        "tourism_growth": -1.469569923305078,
+        "province_en": "Xizang"
+      },
+      {
+        "province": "西藏",
+        "year": 2009,
+        "tourism_growth": 0.9281735778861848,
+        "province_en": "Xizang"
+      },
+      {
+        "province": "贵州",
+        "year": 2004,
+        "tourism_growth": 1.019298793669131,
+        "province_en": "Guizhou"
+      },
+      {
+        "province": "辽宁",
+        "year": 2014,
+        "tourism_growth": -0.7650192981747441,
+        "province_en": "Liaoning"
+      }
+    ]
+  }
+}

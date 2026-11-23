@@ -1,0 +1,49 @@
+{
+  "n": 400,
+  "n_machine_positive": 200,
+  "n_machine_negative": 200,
+  "seed_sample": 20261115,
+  "bootstrap_seed": 20261117,
+  "B": 2000,
+  "tourism_agreement": 0.9425,
+  "tourism_kappa": 0.8851148851148851,
+  "policy_agreement": 0.925,
+  "policy_kappa": 0.8479472883933098,
+  "tourism_disagreements": 23,
+  "adjudication": "not done; primary metrics use each coder on all 400 clauses",
+  "coder_a": {
+    "precision": 0.98,
+    "precision_ci95": [
+      0.9585438255613126,
+      0.9953276461638775
+    ],
+    "recall": 0.9560975609756097,
+    "recall_ci95": [
+      0.9272705207413945,
+      0.9808635224424698
+    ],
+    "tp": 196,
+    "fp": 4,
+    "fn": 9
+  },
+  "coder_b": {
+    "precision": 0.94,
+    "precision_ci95": [
+      0.9033811350627208,
+      0.9701529481306339
+    ],
+    "recall": 0.9791666666666666,
+    "recall_ci95": [
+      0.9558011049723757,
+      0.995
+    ],
+    "tp": 188,
+    "fp": 12,
+    "fn": 4
+  },
+  "policy_action_share_on_machine_positive": {
+    "coder_a": 0.87,
+    "coder_b": 0.84,
+    "n": 200
+  }
+}
