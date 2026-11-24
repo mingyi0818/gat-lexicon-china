@@ -1,4 +1,4 @@
-"""Round 23: supplementary 31-province analyses required by the manuscript switch.
+"""Supplementary 31-province analyses reported alongside the main estimates.
 
 Companion to round22_analysis_31province.py. Computes everything the manuscript
 reports that round22 does not: multi-outcome triangulation, MDE, classification
@@ -11,6 +11,7 @@ any prose references them.
 Preregistered under experiments/prereg_round22_31province_20261122.md (same
 judgment rules: honest reporting, no tuning for significance).
 """
+# 补充分析都在这个脚本里：三结果三角、收敛效度、省间/省内分解、回溯预测。
 from __future__ import annotations
 
 import json
@@ -54,6 +55,7 @@ EN = {
 out: dict = {}
 
 
+# 双向去均值，跟主分析同一套写法，保证数字能对上。
 def two_way_demean(df, cols, entity="province", time="year", tol=1e-13, maxit=5000):
     m = df[cols].astype(float).copy()
     for _ in range(maxit):
@@ -79,12 +81,14 @@ def twfe(panel, dep, indep, entity="province"):
     return m, sub
 
 
+# 日历滞后，老规矩：按（省, 年份-k）取，不按行号 shift。
 def calendar_lag(df, col, k):
     s = df.set_index(["province", "year"])[col]
     idx = pd.MultiIndex.from_arrays([df["province"], df["year"] - k])
     return idx.map(s)
 
 
+# Fisher z 变换算相关系数的置信区间，小样本比正态近似稳一些。
 def fisher_ci(r, n, alpha=0.05):
     z = np.arctanh(np.clip(r, -0.999999, 0.999999))
     se = 1.0 / np.sqrt(n - 3)
@@ -92,6 +96,7 @@ def fisher_ci(r, n, alpha=0.05):
     return [float(lo), float(hi)]
 
 
+# 偏相关：先把控制变量回归掉，再算残差之间的相关。
 def partial_corr(x, y, c):
     df = pd.concat([x, y, c], axis=1).dropna()
     rx = sm.OLS(df.iloc[:, 0], sm.add_constant(df.iloc[:, 2])).fit().resid
@@ -124,6 +129,7 @@ def main():
         ),
     }
 
+        # 换两个结果（入境人次、住宿餐饮业 GDP）再跑同一套时序，看零结果是不是只在收入上出现
     # ---------- 2. multi-outcome triangulation ----------
     df["ln_arrivals"] = np.log(df["inbound_tourist_arrivals_10k"].where(df["inbound_tourist_arrivals_10k"] > 0))
     df["ln_accgdp"] = np.log(df["accommodation_catering_gdp_cny_100m"].where(df["accommodation_catering_gdp_cny_100m"] > 0))
@@ -218,6 +224,7 @@ def main():
         },
     }
 
+        # 省均值之间的相关，只能算效标验证的一半，负相关也别急着解释成政策反向
     # ---------- 5. Table 4: between-province validation correlations ----------
     s = df.dropna(subset=["ln_tourism", "GAT_composite", "ln_gdp"]).copy()
     pm = s.groupby("province").agg(
@@ -237,6 +244,7 @@ def main():
             }
     out["table4_between_validation"] = table4
 
+        # 跟外部 LLM 指数对齐；相关高不高先看剔掉海南还剩多少
     # ---------- 6. Table 5: Yang et al. index-to-index ----------
     y = pd.read_csv(RESULTS / "yang2026_gat_database_raw.csv")
     sys.path.insert(0, str(ROOT))
@@ -300,6 +308,7 @@ def main():
         },
     }
 
+        # 图 4：省间那条线是省均值回归，省内是去均值以后再看，两个符号可以不一样
     # ---------- 7. Figure 4: between/within decomposition ----------
     r_raw, p_raw = stats.pearsonr(pm["GAT"], pm["ln_receipts".replace("ln_receipts", "GAT")]) if False else (None, None)
     lv = df.dropna(subset=["ln_tourism", "GAT_composite", "ln_gdp"]).copy()

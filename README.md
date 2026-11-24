@@ -3,7 +3,7 @@
 Replication package for the paper:
 
 > Government Attention to Tourism: A Transparent Lexicon Index and a Cautionary
-> Assessment of Inbound-Receipt Growth in China
+> Assessment of Inbound Tourism Growth in China
 
 The paper builds a 37-term lexicon index of Government Attention to Tourism
 (GAT) from 671 provincial government work reports (2003–2024), links it to

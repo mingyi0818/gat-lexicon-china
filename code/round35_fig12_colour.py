@@ -1,4 +1,4 @@
-"""Round 35: recolour Figures 1 and 2 (31-province panel) for submission.
+"""Recolour Figures 1 and 2 for submission (same data, colour encoding only).
 
 Mirrors code/round23_fig12_31province.py exactly in data handling and window
 (2003-2019, 671-unit panel restricted to 516 rows). Only visual encoding
@@ -10,6 +10,7 @@ Outputs: figures/fig1_gat_trends_31.png (colour)
          figures/fig2_gat_heatmap_31.png (colour)
          results/round35_fig12_colour.json
 """
+# 只改颜色不动数据：图 1 上半区暖色、下半区冷色，图 2 换 YlGnBu，缺失格留白。
 from __future__ import annotations
 
 import hashlib
@@ -90,6 +91,7 @@ def main() -> None:
               loc="lower center", bbox_to_anchor=(0.5, 1.01))
     fig.tight_layout()
     f1 = os.path.join(FIG, "fig1_gat_trends_31.png")
+        # 图 1 存盘：选省规则没动，还是省均最高四个和最低四个，只换了配色
     fig.savefig(f1, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
@@ -113,6 +115,7 @@ def main() -> None:
     cbar.set_label("GAT composite (z-score)")
     fig.tight_layout()
     f2 = os.path.join(FIG, "fig2_gat_heatmap_31.png")
+        # 图 2 存盘：YlGnBu，缺失格显式留白（set_bad 设成白色）
     fig.savefig(f2, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 

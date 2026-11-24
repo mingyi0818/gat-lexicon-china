@@ -1,10 +1,11 @@
-"""Round 22: build 31-province panels (add 4 municipalities).
+"""Build the 31-province panels (27 provinces plus the four municipalities).
 
 Preregistered in experiments/prereg_round22_31province_20261122.md.
 Reads 27 province-level units from 政府工作报告-省自治区 plus 4 municipalities
 (北京市/天津市/上海市/重庆市) from 政府工作报告-主要城市, recomputes GAT,
 TF-IDF tourism weight, and end-2011 5A stock on all 31 units.
 """
+# 建面板：政府工作报告 → 37 词词典的四个统计量 → TF-IDF 层 → 5A 存量。
 from __future__ import annotations
 
 import os
@@ -41,6 +42,7 @@ TOURISM_LEXICON = [
 ]
 
 
+# 清文本：去 HTML 标签、全角空格、页码那些噪声，正文不能吃掉。
 def _clean_text(text: str) -> str:
     text = re.sub(r"^---.*?---", "", text, flags=re.DOTALL)
     text = re.sub(r"\*\*.*?\*\*", "", text)
@@ -48,11 +50,13 @@ def _clean_text(text: str) -> str:
     return text
 
 
+# 按句末标点切子句；少于 8 个字的碎片丢掉，太短的多半是标题残片。
 def _segment(text: str) -> list[str]:
     parts = re.split(r"[。！？\n；;]", text)
     return [p.strip() for p in parts if len(p.strip()) >= 8]
 
 
+# 四个统计量各自 z 分数后等权平均：词典密度、子句比例、字符密度、词项广度。
 def compute_gat_for_text(text: str) -> dict:
     text = _clean_text(text)
     chars = max(len(text), 1)
@@ -119,6 +123,7 @@ def build_gat(year_min=2003, year_max=2024) -> pd.DataFrame:
     return gat
 
 
+# TF-IDF 必须用全部 815 份文档估，只用估计窗口的话权重会跟着窗口漂。
 def build_tfidf() -> pd.DataFrame:
     """TF-IDF over the FULL corpus (all years, 815 documents), matching the
     canonical methodology (06_attempt4_between_determinants.compute_tfidf_gat
@@ -148,6 +153,7 @@ def build_tfidf() -> pd.DataFrame:
     return df
 
 
+# 5A 按授予年份累加，取 2011 年底的值；年份写两个的按头一个算。
 def build_5a_stock() -> pd.DataFrame:
     HTML = RESULTS / "official_mct_5a_20250311.html"
     PROVINCES = {

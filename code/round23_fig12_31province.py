@@ -1,4 +1,4 @@
-"""Round 23: regenerate Figures 1 and 2 for the 31-province panel.
+"""Regenerate Figures 1 and 2 for the 31-province panel.
 
 Mirrors code/round14_regenerate_fig12.py but reads
 results/provincial_gat_panel_31.csv (671 units, 31 provinces, 2003-2024)
@@ -9,6 +9,7 @@ Outputs: figures/fig1_gat_trends_31.png
          figures/fig2_gat_heatmap_31.png
          results/round23_fig12_31province.json
 """
+# 出图 1、图 2：图 1 是 8 条省际折线，图 2 是 31×17 热力图，空白格就是那年没报告。
 from __future__ import annotations
 
 import hashlib
@@ -48,6 +49,7 @@ EN = {
 }
 
 
+# 算个 md5，方便日后核对图有没有被改过。
 def md5(path: str) -> str:
     with open(path, "rb") as fh:
         return hashlib.md5(fh.read()).hexdigest()
@@ -84,6 +86,7 @@ def main() -> None:
     ax.legend(ncol=4, fontsize=22, frameon=False)
     fig.tight_layout()
     f1 = os.path.join(FIG, "fig1_gat_trends_31.png")
+        # 图 1 存盘：省均 GAT 最高四个 + 最低四个，窗口固定 2003–2019
     fig.savefig(f1, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
@@ -105,6 +108,7 @@ def main() -> None:
     cbar.set_label("GAT composite (z-score)")
     fig.tight_layout()
     f2 = os.path.join(FIG, "fig2_gat_heatmap_31.png")
+        # 图 2 存盘：热力图按省均注意力排序，缺报告的年月留白
     fig.savefig(f2, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 

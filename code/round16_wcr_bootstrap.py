@@ -1,10 +1,9 @@
-"""Round-R16 revision for Paper 07 (R15 reviewer Majors M1, M3, M5, M6).
+"""Restricted wild cluster bootstrap for the two-way fixed-effects design.
 
-Supersedes the wild-cluster-bootstrap block in 09_revision_analysis.py, which
-was invalid: the bootstrap draws were generated from the *unrestricted* fit
-(`yb = Xm @ beta + resid * wv`) and the bootstrap statistic was not centred
-(`t_boot[b] = betab[2] / seb[2]`, no `- beta[2]`), so the bootstrap t
-distribution was centred near t_obs and returned p ~= 0.5 mechanically.
+Draws taken from the unrestricted fit, with t_b = beta_b / se_b and no
+centring, put the bootstrap distribution near t_obs and return p around 0.5
+mechanically. The restricted version below imposes the null first, so the
+bootstrap t is compared against the observed t on the right scale.
 
 This script implements a restricted wild cluster bootstrap (WCR):
   1. fit the restricted model (headline interaction dropped), keep resid_r;
@@ -21,13 +20,15 @@ G = number of clusters, N = obs, K = number of *non-absorbed* parameters, so
 the reported t matches the manuscript's Table 3 ratio.
 
 Also produced here:
-  M5  headline growth estimate re-based on the composite index (with WCR p);
-  M3  leave-Hainan-out / robust correlations for the external validation;
-  M6  outcome-data audit of extreme province-years + winsorised re-estimation.
+  - headline growth estimate re-based on the composite index (with WCR p);
+  - leave-Hainan-out and robust correlations for external validation;
+  - outcome-data audit of extreme province-years plus a winsorised re-estimation.
 
 Outputs: results/round16_wcr_bootstrap.json, results/round16_outcome_audit.json,
          results/round16_leverage.json
 """
+# 小簇推断专用：31 个省就只有 31 个簇，普通聚类稳健标准误容易偏小，
+# 所以这里按零假设重抽，Webb 六点权重当主口径、Rademacher 权重做复核。
 import json
 
 import numpy as np
@@ -39,6 +40,7 @@ SEED = 20260930
 
 
 # ---------------------------------------------------------------- design ----
+# 双向去均值：省和年份轮流减组均值，迭代到收敛，非平衡面板也不用补格。
 def two_way_demean(df, cols, entity="province", time="year", tol=1e-13, maxit=5000):
     """Exact two-way within transformation via alternating projections."""
     out = df[cols].astype(float).copy()
@@ -51,6 +53,7 @@ def two_way_demean(df, cols, entity="province", time="year", tol=1e-13, maxit=50
     return out
 
 
+# CR1 聚类稳健标准误，按省聚类，小样本自由度按 G/(G-1) 收一下。
 def cr1_se(X, resid, groups, n_params):
     """Cluster-robust (CR1) standard errors. X: (N,K) numpy, groups: (N,)."""
     XtX_inv = np.linalg.inv(X.T @ X)
@@ -68,6 +71,8 @@ def cr1_se(X, resid, groups, n_params):
     return np.sqrt(np.diag(c * V))
 
 
+# 关键在“施加零假设”：把要检验的系数按 0 处理，所以 t_b 直接用 beta/se，
+# 再跟观测到的 t 值比，不能拿未约束的拟合去抽。
 def wcr_pvalue(X, y, groups, j, B=9999, weights="webb", seed=SEED, n_params=None):
     """Restricted wild cluster bootstrap p-value for coefficient j of X.
 
@@ -119,6 +124,7 @@ def wcr_pvalue(X, y, groups, j, B=9999, weights="webb", seed=SEED, n_params=None
     }
 
 
+# 主流程：读面板 → 跑基准交互 → Webb 与 Rademacher 各做一遍 → 写 JSON。
 def main():
     panel = pd.read_csv(RESULTS + r"\merged_panel_v2.csv")
     tfidf = pd.read_csv(RESULTS + r"\provincial_gat_tfidf.csv")
@@ -134,7 +140,7 @@ def main():
     panel["GATc_lag1"] = panel.groupby("province")["GAT_composite"].shift(1)
     panel["GATc_lag1_x_emerging"] = panel["GATc_lag1"] * panel["emerging"]
 
-    out = {"note": "Round-R16 WCR (null imposed, centred) on exact two-way FE design"}
+    out = {"note": "restricted wild cluster bootstrap (null imposed) on exact two-way FE design"}
 
     # ---- check: exact demeaning vs dummy-variable OLS -------------------
     sub = panel.dropna(subset=["tourism_growth", "GAT_lag1", "GAT_lag1_x_emerging"]).copy()
@@ -158,7 +164,8 @@ def main():
         "abs_diff": float(abs(beta[2] - beta_d[2])),
     }
 
-    # ---- M1: corrected WCR on the hybrid (manuscript baseline) ---------
+    # 复合指标基线（正文用的那条）上的 WCR，重算一遍
+    # ---- benchmark WCR on the composite index ---------------------------
     out["M1_hybrid_baseline"] = {
         "coef": float(beta[2]), "se_cr1": float(se_cr1[2]),
         "t_cr1": float(beta[2] / se_cr1[2]),
@@ -168,7 +175,8 @@ def main():
     out["M1_wcr_webb"] = wcr_pvalue(X, y, groups, 2, B=9999, weights="webb")
     out["M1_wcr_rademacher"] = wcr_pvalue(X, y, groups, 2, B=9999, weights="rademacher")
 
-    # ---- M5: headline re-based on the composite index ------------------
+    # 头条系数换成复合指标以后再报一次 WCR p 值
+    # ---- headline re-based on the composite index -----------------------
     subc = panel.dropna(subset=["tourism_growth", "GATc_lag1", "GATc_lag1_x_emerging"]).copy()
     dmc = two_way_demean(subc, ["tourism_growth", "GATc_lag1", "GATc_lag1_x_emerging"])
     Xc = np.column_stack([np.ones(len(subc)), dmc["GATc_lag1"].values,
@@ -189,7 +197,8 @@ def main():
     with open(RESULTS + r"\round16_wcr_bootstrap.json", "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, ensure_ascii=False)
 
-    # ---- M3: leverage of the external validation ----------------------
+    # 外部验证的杠杆：留一省重算，看相关是不是被某个省拖着走
+    # ---- leverage of the external validation ---------------------------
     lev = {"note": "leave-one-out and robust correlations of the Table 6 cells"}
     with open(RESULTS + r"\round8_external_validation.json", encoding="utf-8") as f:
         ext = json.load(f)
@@ -226,7 +235,8 @@ def main():
     with open(RESULTS + r"\round16_leverage.json", "w", encoding="utf-8") as f:
         json.dump(lev, f, indent=2, ensure_ascii=False)
 
-    # ---- M6: outcome-data audit ---------------------------------------
+    # 结果数据体检：极端增长、缩尾重估，确认交互项不是几个异常值撑出来的
+    # ---- outcome-data audit --------------------------------------------
     aud = {"note": "extreme province-years in domestic_tourism_spending and growth"}
     p2 = panel.copy()
     lo = p2[p2["domestic_tourism_spending"] < 10]

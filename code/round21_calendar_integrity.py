@@ -1,9 +1,10 @@
-"""Round 21: calendar-safe dynamic estimates and official-cell correction.
+"""Calendar-safe dynamic estimates and the official-cell correction.
 
 Preregistered in experiments/prereg_round21_calendar_integrity.md.
 All lagged variables are joined by exact province-year keys. No row-position
 diff/shift is used for dynamic variables.
 """
+# 这一版就干一件事：滞后按（省, 年份-k）精确取，绝不能拿上一行数据顶上。
 from __future__ import annotations
 
 import json
@@ -38,18 +39,21 @@ REGION = {
 }
 
 
+# 按日历键取滞后值；那一年没报告就留空，不要用相邻年份凑。
 def exact_lag(source: pd.DataFrame, value: str, lag: int, output: str) -> pd.DataFrame:
     result = source[["province", "year", value]].copy()
     result["year"] = result["year"] + lag
     return result.rename(columns={value: output})
 
 
+# 只有相邻两年都有数才算增长，中间断年直接置空，不然会凭空造出增长率。
 def consecutive_change(frame: pd.DataFrame, value: str) -> pd.Series:
     previous_value = frame.groupby("province")[value].shift(1)
     previous_year = frame.groupby("province")["year"].shift(1)
     return (frame[value] - previous_value).where(frame["year"] - previous_year == 1)
 
 
+# 面板拼装：指数、年鉴结果、5A 存量三块按省-年对齐，缺的留 NaN 不填。
 def prepare_panel() -> tuple[pd.DataFrame, dict]:
     outcome = pd.read_csv(RESULTS / "provincial_inbound_receipts_panel.csv")
     gat = pd.read_csv(RESULTS / "provincial_gat_panel.csv")
@@ -174,6 +178,7 @@ def prepare_panel() -> tuple[pd.DataFrame, dict]:
     return panel, audit
 
 
+# 双向固定效应用组内变换实现，比塞一堆虚拟变量省内存。
 def twfe(panel, dependent, independent, cluster="province", mask=None):
     required = [dependent] + independent + ["province", "year", cluster]
     sub = panel.dropna(subset=required).copy()
@@ -210,6 +215,7 @@ def interaction(panel, exposure, moderator, controls=None, cluster="province", m
     return result
 
 
+# Holm 逐步校正：六个设定算一个家族，先排 p 值再逐个收紧阈值。
 def holm(raw: dict[str, float]) -> dict[str, float]:
     ordered = sorted(raw, key=raw.get)
     adjusted = {}
@@ -301,6 +307,7 @@ def run_h2(panel):
     }
 
 
+# 野聚类自助法，交互项的主推断用它，聚类稳健 p 值并排报出来做对照。
 def run_wcr(panel):
     work = panel.copy()
     work["gat_x_lower"] = work["GAT_L1"] * work["em_baseline"]
@@ -490,6 +497,7 @@ def within_fit_predict(train, test, exposure=None):
     return (baseline + beta * test[exposure]).to_numpy()
 
 
+# 回溯式样本外：只用 t 年以前的数据估模型，再拿来预测第 t 年。
 def run_oos(panel):
     output = {}
     for label, exposure in {
@@ -621,7 +629,7 @@ def main():
     desc = descriptives(panel)
     plot_coefficients(h1, h2)
     output = {
-        "note": "Round 21 calendar-integrity correction; all results retained.",
+        "note": "calendar-integrity correction; all results retained.",
         "prereg": "experiments/prereg_round21_calendar_integrity.md",
         "source_audit": source_audit,
         "descriptives": desc,

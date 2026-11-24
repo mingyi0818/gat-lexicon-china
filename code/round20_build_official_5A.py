@@ -7,6 +7,8 @@ used for cumulative stock at end-2011.
 """
 from __future__ import annotations
 
+# 用途很单纯：从文旅部官方数据页拿 5A 名录，按授予年份累加，取 2011 年底各省存量。
+# 年份写成“2007/2018”的，按前一个年份算，口径和正文一致。
 import json
 import re
 from pathlib import Path
@@ -26,6 +28,7 @@ PROVINCES = {
 }
 
 
+# 抓取 → 省名归一 → 剔除 2011 年以后授的 → 按省汇总成 CSV。
 def main():
     soup = BeautifulSoup(HTML.read_text(encoding="utf-8"), "html.parser")
     container = soup.select_one("#province")

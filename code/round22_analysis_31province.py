@@ -1,10 +1,11 @@
-"""Round 22: 31-province re-estimation (add 4 municipalities).
+"""31-province re-estimation (27 provinces plus the four municipalities).
 
 Preregistered in experiments/prereg_round22_31province_20261122.md.
 Mirrors round21_calendar_integrity.py exactly, but reads the 31-province panels
 (provincial_gat_panel_31.csv etc.) and extends REGION to 31 units. All lagged
 variables are joined by exact province-year keys (no row-position shift/diff).
 """
+# 31 省重估：口径跟 27 省版保持一致，只是把京津沪渝并进来，别顺手改别的设定。
 from __future__ import annotations
 
 import os
@@ -72,6 +73,7 @@ def consecutive_change(frame, value):
     return (frame[value] - previous_value).where(frame["year"] - previous_year == 1)
 
 
+# 面板拼装，31 个单位、2003–2019 估计窗口，滞后全部走日历键。
 def prepare_panel():
     outcome = pd.read_csv(RESULTS / "provincial_inbound_receipts_panel.csv")
     gat = pd.read_csv(RESULTS / "provincial_gat_panel_31.csv")
@@ -276,6 +278,7 @@ def run_level(panel):
     return results
 
 
+# H2 就是滞后 GAT × 低收入组，交互项系数就是候选异质性。
 def run_h2(panel):
     specs = {
         "baseline": interaction(panel, "GAT_L1", "em_baseline"),
@@ -315,6 +318,7 @@ def run_h2(panel):
     }
 
 
+# 31 个簇算少的，交互项的显著性以 WCR 为准，cluster p 只作参考。
 def run_wcr(panel):
     work = panel.copy()
     work["gat_x_lower"] = work["GAT_L1"] * work["em_baseline"]
@@ -383,6 +387,7 @@ def lagged_variant(panel, measure, value, output):
     )
 
 
+# 词典扰动：一组一组删词，看交互项是不是只靠某一类词撑着。
 def run_dictionary(panel):
     cached = load_report_cache_31()
     variants = {
@@ -577,6 +582,7 @@ def descriptives(panel):
     }
 
 
+# 图 3：左边三个滞后，右边六种分组，误差棒按 1.96×SE 画。
 def plot_coefficients(h1, h2):
     plt.rcParams.update({
         "font.family": "Times New Roman", "font.size": 22,
@@ -640,7 +646,7 @@ def main():
     desc = descriptives(panel)
     plot_coefficients(h1, h2)
     output = {
-        "note": "Round 22: 31-province extension (4 municipalities added).",
+        "note": "31-province extension (four municipalities added); exact calendar keys.",
         "prereg": "experiments/prereg_round22_31province_20261122.md",
         "source_audit": source_audit,
         "descriptives": desc,
